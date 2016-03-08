@@ -166,7 +166,7 @@ function checkCollisions(items, player) {
             collided(item);
         }
     });
-};
+}
 
 // Abstracts collisions, allowing reuse for multiple object types.
 function collided(obj) {
@@ -180,4 +180,4 @@ function collided(obj) {
         obj.hide();
         score.score += obj.score;
     }
-};
+}
