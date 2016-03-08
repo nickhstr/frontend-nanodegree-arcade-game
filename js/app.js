@@ -79,7 +79,7 @@ var allEnemies = [
     new Enemy(-200, 239, 250)
 ];
 
-// Instantiate player
+// Instantiate player, in 3rd column, 6th row.
 var player = new Player(202, 400);
 
 
@@ -98,12 +98,12 @@ document.addEventListener('keyup', function(e) {
 
 // Collision detection function.
 function checkCollisions(allEnemies, player) {
-    for (var i = 0; i < allEnemies.length; i++) {
-        if (allEnemies[i].x < player.x + player.width &&
-            allEnemies[i].x + allEnemies[i].width > player.x &&
-            allEnemies[i].y < player.y + player.height &&
-            allEnemies[i].y + allEnemies[i].height > player.y) {
+    allEnemies.forEach(function(enemy) {
+        if (enemy.x < player.x + player.width &&
+            enemy.x + enemy.width > player.x &&
+            enemy.y < player.y + player.height &&
+            enemy.y + enemy.height > player.y) {
             player.reset(202, 400);
         }
-    }
+    });
 };
