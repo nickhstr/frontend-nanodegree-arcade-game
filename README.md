@@ -1,6 +1,6 @@
 Nick's Arcade Game
 ===============================
-### Here's the [game](http://www.needaurl.com/).
+### Here's the [game](http://nickhstr.github.io/frontend-nanodegree-arcade-game/).
 
 It will start automatically. Don't worry, it's not timed (yet!).
 
