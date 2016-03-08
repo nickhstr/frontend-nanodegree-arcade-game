@@ -2,9 +2,8 @@
 var Enemy = function(x, y, speed) {
     this.x = x;
     this.y = y;
-
     this.speed = speed;
-    //Width and height are set for collision purposes
+    //Width and height are set for collision detection
     this.width = 80;
     this.height = 50;
     this.sprite = 'images/enemy-bug.png';
@@ -28,24 +27,29 @@ Enemy.prototype.render = function() {
     ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
 };
 
+// Player constructor
 var Player = function(x, y) {
     this.x = x;
     this.y = y;
+    // Width and height for collison detection
     this.width = 50;
     this.height = 75;
     this.sprite = 'images/char-boy.png';
 };
 
 Player.prototype.update = function(dt) {
+    // The only thing to update is if for some reason the player's y value leaves the canvas area.
     if (this.y <= 0) {
         this.reset(202, 400);
     }
 };
 
+// Similar to the render method for Enemey
 Player.prototype.render = function() {
     ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
 };
 
+// The left/right and up/down values are the same as the widths and heights of the rows and columns in engine.js
 Player.prototype.handleInput = function(move) {
     if (move === 'up' && this.y > 0) {
         this.y -= 83;
@@ -61,21 +65,21 @@ Player.prototype.handleInput = function(move) {
     }
 };
 
+// This method resets the player's position under specific conditions.
 Player.prototype.reset = function(x, y) {
     this.x = x;
     this.y = y;
 };
 
 
-// Now instantiate your objects.
-// Place all enemy objects in an array called allEnemies
-// Place the player object in a variable called player
+// Instantiate enemies
 var allEnemies = [
     new Enemy(-200, 73, 200),
     new Enemy(-200, 156, 300),
     new Enemy(-200, 239, 250)
 ];
 
+// Instantiate player
 var player = new Player(202, 400);
 
 
@@ -92,6 +96,7 @@ document.addEventListener('keyup', function(e) {
     player.handleInput(allowedKeys[e.keyCode]);
 });
 
+// Collision detection function.
 function checkCollisions(allEnemies, player) {
     for (var i = 0; i < allEnemies.length; i++) {
         if (allEnemies[i].x < player.x + player.width &&
