@@ -71,6 +71,23 @@ Player.prototype.reset = function(x, y) {
     this.y = y;
 };
 
+var Gem = function(x, y, sprite, score) {
+    this.x = x;
+    this.y = y;
+    this.sprite = sprite;
+    this.score = score;
+    this.width = 50;
+    this.height = 50;
+};
+
+Gem.prototype.render = function() {
+    ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
+};
+
+Gem.prototype.hide = function() {
+    this.x = 1000;
+    this.y = 1000;
+};
 
 // Instantiate enemies
 var allEnemies = [
@@ -81,6 +98,11 @@ var allEnemies = [
 
 // Instantiate player, in 3rd column, 6th row.
 var player = new Player(202, 400);
+
+var allGems = [
+    new Gem(0, 68, 'images/Gem Blue.png', 100),
+    new Gem(303, 151, 'images/Gem Orange.png', 50)
+];
 
 
 // This listens for key presses and sends the keys to your
@@ -97,13 +119,22 @@ document.addEventListener('keyup', function(e) {
 });
 
 // Collision detection function.
-function checkCollisions(allEnemies, player) {
-    allEnemies.forEach(function(enemy) {
-        if (enemy.x < player.x + player.width &&
-            enemy.x + enemy.width > player.x &&
-            enemy.y < player.y + player.height &&
-            enemy.y + enemy.height > player.y) {
-            player.reset(202, 400);
+function checkCollisions(items, player) {
+    items.forEach(function(item) {
+        if (item.x < player.x + player.width &&
+            item.x + item.width > player.x &&
+            item.y < player.y + player.height &&
+            item.y + item.height > player.y) {
+            collided(item);
         }
     });
+};
+
+function collided(obj) {
+    if (obj instanceof Enemy) {
+        player.reset(202, 400);
+    }
+    if (obj instanceof Gem) {
+        obj.hide();
+    }
 };
