@@ -72,7 +72,7 @@ Player.prototype.reset = function(x, y) {
     this.y = y;
 };
 
-// Gmes! When a player collects these, their score increases based on the score value of the gem.
+// Gme constructor! When a player collects these, their score increases based on the score value of the gem.
 var Gem = function(x, y, sprite, score) {
     this.x = x;
     this.y = y;
@@ -87,23 +87,26 @@ Gem.prototype.render = function() {
     ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
 };
 
-// This  hides the gems off-screen when collected by the player
+// This hides the gems off-screen when collected by the player
 Gem.prototype.hide = function() {
     this.x = 1000;
     this.y = 1000;
 };
 
+// Score constructor. Keeps track of score based on gems collected.
 var Score = function() {
     this.text = 'Score: ';
     this.score = 0;
 };
 
+// Renders the score on the bottom left of the canvas.
 Score.prototype.render = function() {
     ctx.font = '14pt Courier';
     ctx.fillStyle = 'white';
     ctx.fillText(this.text + this.score, 5, 580);
 };
 
+// Constructor for a win/loss counter.
 var WinsLosses = function() {
     this.winText = 'Wins: ';
     this.lossText = 'Losses: ';
@@ -111,10 +114,11 @@ var WinsLosses = function() {
     this.losses = 0;
 };
 
+// Renders the win/loss counter on the bottom right of the canvas.
 WinsLosses.prototype.render = function() {
     ctx.font = '14pt Courier';
     ctx.fillStyle = 'white';
-    ctx.fillText(this.winText + this.wins + ' ' + this.lossText + this.losses, 303, 580);
+    ctx.fillText(this.winText + this.wins + ' ' + this.lossText + this.losses, 290, 580);
 };
 
 // Instantiate enemies
@@ -166,10 +170,12 @@ function checkCollisions(items, player) {
 
 // Abstracts collisions, allowing reuse for multiple object types.
 function collided(obj) {
+    // Updates player location and loss counter.
     if (obj instanceof Enemy) {
         player.reset(202, 400);
         winLoss.losses++;
     }
+    // Upon collection of gem, score is update and the gem is moved outside of the scope of the canvas.
     if (obj instanceof Gem) {
         obj.hide();
         score.score += obj.score;
