@@ -1,13 +1,27 @@
-// Enemy constructor
-var Enemy = function(x, y, speed) {
+// Superclass for Enemy and Player.
+var Character = function(x, y) {
     this.x = x;
     this.y = y;
+};
+
+// Method used to render objects on the canvas.
+Character.prototype.render = function() {
+    ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
+};
+
+// Enemy constructor
+var Enemy = function(x, y, speed) {
+    //Inherit properties from Character
+    Character.call(this, x, y);
     this.speed = speed;
     //Width and height are set for collision detection
     this.width = 80;
     this.height = 50;
     this.sprite = 'images/enemy-bug.png';
 };
+
+// Inherit the prototype from Character.
+Enemy.prototype = Object.create(Character.prototype);
 
 // Update the enemy's position, required method for game
 // Parameter: dt, a time delta between ticks
@@ -22,20 +36,18 @@ Enemy.prototype.update = function(dt) {
     }
 };
 
-// Draw the enemy on the screen, required method for game
-Enemy.prototype.render = function() {
-    ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
-};
-
 // Player constructor
 var Player = function(x, y) {
-    this.x = x;
-    this.y = y;
+    //Inherit properties from Character
+    Character.call(this, x, y);
     // Width and height for collison detection
     this.width = 50;
     this.height = 75;
     this.sprite = 'images/char-boy.png';
 };
+
+// Inherit the prototype from Character.
+Player.prototype = Object.create(Character.prototype);
 
 Player.prototype.update = function(dt) {
     // This resets the player's position when they reach the water, and increases the win counter by one.
@@ -43,11 +55,6 @@ Player.prototype.update = function(dt) {
         this.reset(202, 400);
         winLoss.wins++;
     }
-};
-
-// Similar to the render method for Enemey
-Player.prototype.render = function() {
-    ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
 };
 
 // The left/right and up/down values are the same as the widths and heights of the rows and columns in engine.js
